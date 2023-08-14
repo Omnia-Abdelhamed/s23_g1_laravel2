@@ -31,7 +31,8 @@ class EmployeeContoller extends Controller
         $deptData=[
             ['dno'=>10,'dname'=>'d10'],
             ['dno'=>20,'dname'=>'d20'],
-            ['dno'=>30,'dname'=>'d30']
+            ['dno'=>30,'dname'=>'d30'],
+            ['dno'=>40,'dname'=>'d40'],
         ];
         return view('admin.employees.create',['deptData'=>$deptData]);
     }
