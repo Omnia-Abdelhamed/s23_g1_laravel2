@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class EmployeeContoller extends Controller
@@ -14,10 +16,7 @@ class EmployeeContoller extends Controller
      */
     public function index()
     {
-        $data=[
-            ['SSN'=>'123','Fullname'=>'ali ahmed','Department'=>'cs'],
-            ['SSN'=>'456','Fullname'=>'hala ali','Department'=>'os']
-        ];
+        $data=Employee::select('SSN','fname','lname','dno')->get();
         return view('admin.employees.index',['data'=>$data]);
     }
 
@@ -28,12 +27,7 @@ class EmployeeContoller extends Controller
      */
     public function create()
     {
-        $deptData=[
-            ['dno'=>10,'dname'=>'d10'],
-            ['dno'=>20,'dname'=>'d20'],
-            ['dno'=>30,'dname'=>'d30'],
-            ['dno'=>40,'dname'=>'d40'],
-        ];
+        $deptData=Department::select('dno','dname')->get(); // select * from employees
         return view('admin.employees.create',['deptData'=>$deptData]);
     }
 
@@ -45,7 +39,16 @@ class EmployeeContoller extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        Employee::create([
+            'SSN'=>$request->ssn,
+            'fname'=>$request->fname,
+            'lname'=>$request->lname,
+            'email'=>$request->email,
+            'gender'=>$request->gender,
+            'dno'=>$request->dno
+        ]);
+
+        return redirect()->back()->with('msg','Added..');
     }
 
     /**
@@ -56,7 +59,9 @@ class EmployeeContoller extends Controller
      */
     public function show($id)
     {
-        return view('admin.employees.show',['id'=>$id]);
+        // $data=Employee::where('SSN',$id)->first();
+        $data=Employee::findorfail($id);
+        return view('admin.employees.show',['data'=>$data]);
     }
 
     /**
@@ -67,7 +72,9 @@ class EmployeeContoller extends Controller
      */
     public function edit($id)
     {
-        //
+        $deptData=Department::select('dno','dname')->get();
+        $data=Employee::findorfail($id);
+        return view('admin.employees.edit',['deptData'=>$deptData,'data'=>$data]);
     }
 
     /**
@@ -79,7 +86,17 @@ class EmployeeContoller extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee=Employee::findorfail($id);
+        $employee->update([
+            'SSN'=>$request->ssn,
+            'fname'=>$request->fname,
+            'lname'=>$request->lname,
+            'email'=>$request->email,
+            'gender'=>$request->gender,
+            'dno'=>$request->dno
+        ]);
+
+        return redirect()->route('employees.index')->with('msg','updated..');
     }
 
     /**
@@ -90,6 +107,8 @@ class EmployeeContoller extends Controller
      */
     public function destroy($id)
     {
-        //
+        $employee=Employee::findorfail($id);
+        $employee->delete();
+        return redirect()->route('employees.index')->with('msg','deleted..');
     }
 }

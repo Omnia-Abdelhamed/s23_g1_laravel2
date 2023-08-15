@@ -26,8 +26,9 @@
         <div class="alert alert-success">{{ Session::get('msg') }}</div>
         @endif
         <div class="card">
-          <form class="form-horizontal" action="{{ route('employees.store') }}" enctype="multipart/form-data" method="post">
+          <form class="form-horizontal" action="{{ route('employees.update',$data->SSN) }}" enctype="multipart/form-data" method="post">
             @csrf
+            @method('PUT')
             <div class="card-body">
             <div class="form-group row">
                 <label
@@ -42,6 +43,7 @@
                     id="ssn"
                     placeholder="SSN Here"
                     name="ssn"
+                    value="{{ $data->SSN }}"
                   />
                 </div>
               </div>
@@ -58,6 +60,7 @@
                     id="fname"
                     placeholder="First Name Here"
                     name="fname"
+                    value="{{ $data->fname }}"
                   />
                 </div>
               </div>
@@ -74,6 +77,7 @@
                     id="lname"
                     placeholder="Last Name Here"
                     name="lname"
+                    value="{{ $data->lname }}"
                   />
                 </div>
               </div>
@@ -90,6 +94,7 @@
                     id="email"
                     placeholder="Email Here"
                     name="email"
+                    value="{{ $data->email }}"
                   />
                 </div>
               </div>
@@ -123,6 +128,9 @@
                       id="customControlValidation1"
                       name="gender"
                       value="m"
+                      @if($data->gender == "m")
+                      checked
+                      @endif
                     />
                     <label
                       class="form-check-label mb-0"
@@ -137,6 +145,9 @@
                       id="customControlValidation2"
                       name="gender"
                       value="f"
+                      @if($data->gender == "f")
+                      checked
+                      @endif
                     />
                     <label
                       class="form-check-label mb-0"
@@ -155,7 +166,11 @@
                 <div class="col-sm-9">
                   <select class="form-control" name="dno">
                     @foreach ($deptData as $dept)
-                    <option value="{{ $dept['dno'] }}">{{ $dept['dname'] }}</option>
+                    <option value="{{ $dept['dno'] }}"
+                    @if($data->dno == $dept->dno)
+                    selected
+                    @endif
+                    >{{ $dept['dname'] }}</option>
                     @endforeach
                   </select>
                 </div>

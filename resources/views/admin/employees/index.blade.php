@@ -29,6 +29,9 @@ rel="stylesheet"
           <!-- Start Page Content -->
           <div class="row">
             <div class="col-12">
+                @if(Session::has('msg'))
+                    <div class="alert alert-success">{{ Session::get('msg') }}</div>
+                @endif
             <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">All Employees</h5>
@@ -39,7 +42,6 @@ rel="stylesheet"
                     >
                       <thead>
                         <tr>
-                            <th>id</th>
                             <th>SSN</th>
                             <th>Fullname</th>
                             <th>Department</th>
@@ -49,12 +51,17 @@ rel="stylesheet"
                       <tbody>
                         @forelse ($data as $value)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $value['SSN'] }}</td>
-                            <td>{{ $value['Fullname'] }}</td>
-                            <td>{{ $value['Department'] }}</td>
+                            <td>{{ $value['fname']." ".$value['lname']}}</td>
+                            <td>{{ $value['dno'] }}</td>
                             <td>
                                 <a href="{{ route('employees.show',$value['SSN']) }}" class="btn btn-primary">show</a>
+                                <a href="{{ route('employees.edit',$value['SSN']) }}" class="btn btn-success">edit</a>
+                                <form action="{{ route('employees.destroy',$value['SSN']) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="submit" value="delete" class="btn btn-danger">
+                                </form>
                             </td>
                         </tr>
                         @empty
