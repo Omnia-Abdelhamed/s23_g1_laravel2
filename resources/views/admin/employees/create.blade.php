@@ -22,6 +22,15 @@
 @section('content')
 <div class="row">
     <div class="col-md-12">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         @if(Session::has('msg'))
         <div class="alert alert-success">{{ Session::get('msg') }}</div>
         @endif
@@ -38,12 +47,16 @@
                 <div class="col-sm-9">
                   <input
                     type="text"
-                    class="form-control"
+                    class="form-control @error('ssn') is-invalid @enderror"
                     id="ssn"
                     placeholder="SSN Here"
                     name="ssn"
                   />
+                  @error('ssn')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
                 </div>
+
               </div>
               <div class="form-group row">
                 <label

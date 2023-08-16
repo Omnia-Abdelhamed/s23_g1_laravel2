@@ -45,12 +45,16 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <th>Created</th>
-                    <td></td>
+                    <th>Department</th>
+                    <td>{{ $data->department->dname }}</td>
                 </tr>
                 <tr>
-                    <th>Updated</th>
-                    <td></td>
+                    <th>Projects</th>
+                    <td>
+                        @foreach ($data->projects as $project)
+                            <li>{{ $project->pname }}</li>
+                        @endforeach
+                    </td>
                 </tr>
             </table>
         </div>

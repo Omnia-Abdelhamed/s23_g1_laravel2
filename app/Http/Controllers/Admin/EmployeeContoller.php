@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -37,14 +38,21 @@ class EmployeeContoller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EmployeeRequest $request)
     {
+        if($request->file('image')){
+            $image_name=$request->file('image')->getClientOriginalName();
+            $request->file('image')->storeAs('employees',$image_name,'upload');
+        }else{
+            $image_name=null;
+        }
         Employee::create([
             'SSN'=>$request->ssn,
             'fname'=>$request->fname,
             'lname'=>$request->lname,
             'email'=>$request->email,
             'gender'=>$request->gender,
+            'image'=>$image_name,
             'dno'=>$request->dno
         ]);
 
@@ -84,7 +92,7 @@ class EmployeeContoller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(EmployeeRequest $request, $id)
     {
         $employee=Employee::findorfail($id);
         $employee->update([
@@ -110,5 +118,22 @@ class EmployeeContoller extends Controller
         $employee=Employee::findorfail($id);
         $employee->delete();
         return redirect()->route('employees.index')->with('msg','deleted..');
+    }
+
+    public function archive(){
+        $data=Employee::onlyTrashed()->select('SSN','fname','lname','dno')->get();
+        return view('admin.employees.archive',['data'=>$data]);
+    }
+
+    public function restore($id){
+        $employee=Employee::withTrashed()->findOrFail($id);
+        $employee->restore();
+        return redirect()->back();
+    }
+
+    public function deleteArchive($id){
+        $employee=Employee::withTrashed()->findOrFail($id);
+        $employee->forceDelete();
+        return redirect()->back();
     }
 }

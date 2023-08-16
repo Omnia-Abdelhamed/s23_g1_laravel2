@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\EmployeeContoller;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +21,13 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=>'admin'],function(){
-    // Route::get('employees',[EmployeeController::class,'index'])->name('employees.index');
-    // Route::get('employees/create',[EmployeeController::class,'create'])->name('employees.create');
-    // Route::post('employees',[EmployeeController::class,'store'])->name('employees.store');
+    Route::get('employees/archive',[EmployeeContoller::class,'archive'])->name('employees.archive');
+    Route::post('employees/restore/{employee}',[EmployeeContoller::class,'restore'])->name("employees.restore");
+    Route::delete('employees/deleteArchive/{employee}',[EmployeeContoller::class,'deleteArchive'])->name("employees.deleteArchive");
     Route::resources([
         'employees'=>EmployeeContoller::class,
         'departments'=>DepartmentController::class,
+        'projects'=>ProjectController::class,
     ]);
+
 });

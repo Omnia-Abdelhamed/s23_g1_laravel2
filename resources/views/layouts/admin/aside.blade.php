@@ -32,6 +32,12 @@
                 ><span class="hide-menu"> Add Employee </span></a
               >
             </li>
+            <li class="sidebar-item">
+                <a href="{{ route('employees.archive') }}" class="sidebar-link"
+                  ><i class="mdi mdi-note-plus"></i
+                  ><span class="hide-menu"> Archive </span></a
+                >
+              </li>
           </ul>
         </li>
         <li class="sidebar-item">

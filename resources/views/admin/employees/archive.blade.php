@@ -55,9 +55,11 @@ rel="stylesheet"
                             <td>{{ $value['fname']." ".$value['lname']}}</td>
                             <td>{{ $value['dno'] }}</td>
                             <td>
-                                <a href="{{ route('employees.show',$value['SSN']) }}" class="btn btn-primary">show</a>
-                                <a href="{{ route('employees.edit',$value['SSN']) }}" class="btn btn-success">edit</a>
-                                <form action="{{ route('employees.destroy',$value['SSN']) }}" method="post" style="display: inline-block">
+                                <form action="{{ route('employees.restore',$value['SSN']) }}" method="post" style="display: inline-block">
+                                    @csrf
+                                    <input type="submit" value="restore" class="btn btn-success">
+                                </form>
+                                <form action="{{ route('employees.deleteArchive',$value['SSN']) }}" method="post" style="display: inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <input type="submit" value="delete" class="btn btn-danger">
@@ -73,8 +75,8 @@ rel="stylesheet"
                       <tfoot>
                         <tr>
                           <th>Name</th>
-                          <th>Position</th>
-                          <th>Office</th>
+                          <th>Fullname</th>
+                          <th>Department</th>
                         </tr>
                       </tfoot>
                     </table>
