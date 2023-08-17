@@ -17,14 +17,14 @@ class Employee extends Model
     protected $fillable=['SSN','fname','lname','gender','email','dno','image'];
 
     public function department(){
-        return $this->belongsTo(Department::class,'dno'); // one
+        return $this->belongsTo(Department::class,'dno'); // select * from departments where dno = 10
     }
 
     public function projects(){ //
         return $this->belongsToMany(Project::class,'employee_project','employee_id','project_id','SSN','pno');
     }
 
-    // public function skills(){
-    //     return $this->hasMany(Skill::class,'employee_id',);
-    // }
+    public function skills(){
+        return $this->hasMany(Skill::class,'ssn');
+    }
 }

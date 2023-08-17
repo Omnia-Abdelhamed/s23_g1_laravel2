@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Models\Department;
 use App\Models\Employee;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class EmployeeContoller extends Controller
@@ -68,7 +69,8 @@ class EmployeeContoller extends Controller
     public function show($id)
     {
         // $data=Employee::where('SSN',$id)->first();
-        $data=Employee::findorfail($id);
+        $data=Employee::findorfail($id); // dno
+        return $data->skills;
         return view('admin.employees.show',['data'=>$data]);
     }
 
@@ -135,5 +137,16 @@ class EmployeeContoller extends Controller
         $employee=Employee::withTrashed()->findOrFail($id);
         $employee->forceDelete();
         return redirect()->back();
+    }
+
+    public function createProjects($ssn){
+        $data=Project::get();
+        return view('admin.employees.addProjects',['data'=>$data,'ssn'=>$ssn]);
+    }
+
+    public function storeProjects(Request $request){
+        $employee=Employee::findorfail($request->ssn); //123
+        $employee->projects()->syncWithoutDetaching($request->projects); // 1 4 5
+        return back();
     }
 }

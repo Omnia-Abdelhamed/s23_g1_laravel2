@@ -11,6 +11,6 @@ class Department extends Model
     protected $primaryKey = 'dno';
 
     public function employees(){
-        return $this->hasMany(Employee::class,'dno');
+        return $this->hasMany(Employee::class,'dno'); // select * from employees where dno=10
     }
 }

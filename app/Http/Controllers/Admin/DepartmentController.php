@@ -48,6 +48,7 @@ class DepartmentController extends Controller
     public function show($id)
     {
         $data=Department::findorfail($id);
+        return $data->employees;
         return view('admin.departments.show',['data'=>$data]);
     }
 

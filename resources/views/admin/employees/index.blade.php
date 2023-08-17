@@ -62,6 +62,7 @@ rel="stylesheet"
                                     @method('DELETE')
                                     <input type="submit" value="delete" class="btn btn-danger">
                                 </form>
+                                <a href="{{ route('employees.createProjects',$value['SSN']) }}" class="btn btn-success">Projects</a>
                             </td>
                         </tr>
                         @empty
